@@ -1,12 +1,27 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import styles from "./ScheduleForm.module.css";
+import { api } from "../../lib/api";
+
 
 const ScheduleForm = () => {
+  const [denstistas, setDentistas] = useState([])
+
+  const loadDentistas = useCallback(async ()=> {
+    const { data } = await api('/dentista', {
+      headers: {
+        Authorization: {
+          Authorization: localStorage.getItem('@dhOdonto_token')
+        }
+      }
+    })
+    setDentistas(data)
+  },[])
   useEffect(() => {
+    loadDentistas()
     //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
     //e pacientes e carregar os dados em 2 estados diferentes
-  }, []);
-
+  }, [loadDentistas]);
+  console.log(denstistas)
   const handleSubmit = (event) => {
     //Nesse handlesubmit você deverá usar o preventDefault,
     //obter os dados do formulário e enviá-los no corpo da requisição 
@@ -27,18 +42,21 @@ const ScheduleForm = () => {
           <div className={`row ${styles.rowSpacing}`}>
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="dentist" className="form-label">
-                Dentist
+                Dentista
               </label>
               <select className="form-select" name="dentist" id="dentist">
-                {/*Aqui deve ser feito um map para listar todos os dentistas*/}
-                <option key={'Matricula do dentista'} value={'Matricula do dentista'}>
+              <option key={'Matricula do dentista'} value={'Matricula do dentista'}>
                   {`Nome Sobrenome`}
                 </option>
+                {denstistas.map((dentista) => (
+                  <option>{dentista.nome}</option>
+                ))}
+               
               </select>
             </div>
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="patient" className="form-label">
-                Patient
+                Paciente
               </label>
               <select className="form-select" name="patient" id="patient">
                 {/*Aqui deve ser feito um map para listar todos os pacientes*/}

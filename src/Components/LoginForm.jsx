@@ -1,14 +1,34 @@
+import { useContext, useState } from "react";
 import styles from "./Form.module.css";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/auth-context";
 
 const LoginForm = () => {
-  const handleSubmit = (e) => {
-    //Nesse handlesubmit você deverá usar o preventDefault,
-    //enviar os dados do formulário e enviá-los no corpo da requisição 
-    //para a rota da api que faz o login /auth
-    //lembre-se que essa rota vai retornar um Bearer Token e o mesmo deve ser salvo
-    //no localstorage para ser usado em chamadas futuras
-    //Com tudo ocorrendo corretamente, o usuário deve ser redirecionado a página principal,com react-router
-    //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
+  const context = useContext(AuthContext)
+  const navigate = useNavigate()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+
+  function handleUsername(e) {
+    setUsername(e.target.value)
+  }
+
+  function handlePassword(e) {
+    setPassword(e.target.value)
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    try {
+      await context.auth(username, password)
+      navigate('/home')
+    } catch (error) {
+      alert(error.response.data.message)
+      //Lembre-se de usar um alerta para dizer se  ou ocorreu um erro
+    }
+    
+
   };
 
   return (
@@ -25,12 +45,16 @@ const LoginForm = () => {
               placeholder="Login"
               name="login"
               required
+              value={username}
+              onChange={handleUsername}
             />
             <input
               className={`form-control ${styles.inputSpacing}`}
               placeholder="Password"
               name="password"
               type="password"
+              value={password}
+              onChange={handlePassword}
               required
             />
             <button className="btn btn-primary" type="submit">
