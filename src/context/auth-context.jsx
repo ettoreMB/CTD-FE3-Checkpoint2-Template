@@ -6,12 +6,8 @@ const AuthProvider = ({children}) => {
   const [username , setUsername] = useState("");
   const [done, setDone] = useState(false);
     useEffect(() =>{
-      if(!localStorage.getItem("@dhOdonto_user_name")) {
-       return  setDone(false)
-      }
         setUsername(localStorage.getItem("@dhOdonto_user_name"))
-        setDone(true)
-    },[])
+    },[username])
 
     const saveData = (user_name,token) =>{
         localStorage.setItem("@dhOdonto_user_name", user_name );
@@ -20,7 +16,7 @@ const AuthProvider = ({children}) => {
 
     const removeData = () =>{
         localStorage.removeItem("@dhOdonto_user_name")
-        setDone(false)
+        localStorage.removeItem("@dhOdonto_token");
     }
     async function auth(username, password) {
       try {
