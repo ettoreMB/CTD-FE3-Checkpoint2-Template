@@ -1,17 +1,20 @@
-import { Link, useNavigate, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/auth-context";
+import { ThemeContext } from "../../context/theme-context";
 
 const Navbar = () => {
-  const context = useContext(AuthContext)
+  const authContext = useContext(AuthContext)
+  const {darkmode,changeTheme} = useContext(ThemeContext)
   const navigate = useNavigate()
   
-
+  
   function handleLogout() {
-    context.removeData()
+    authContext.removeData()
     navigate('/login')
   }
+  
 
   const token = localStorage.getItem("@dhOdonto_token")
   useEffect(() => {
@@ -21,17 +24,16 @@ const Navbar = () => {
   },[])
   return (
     <header className="sticky-top">
-      {/* //Na linha seguinte deverá ser feito um teste se a aplicação
-        // está em dark mode e deverá utilizar navbar-dark bg-dark ou navbar-light bg-light*/}
+   
       <nav
-        className={`navbar navbar-expand-sm navbar-light bg-light`}
+        className={`navbar navbar-expand-sm ${darkmode ? "navbar-dark bg-dark ":"navbar-light bg-light"}`}
         aria-label="Third navbar example"
       >
         <div className="container">
           {/* Ao clicar, o usuário deve ser redirecionado a home, com react-router */}
-          <a className={`navbar-brand ${styles.navbarBrand}`} href="/home">
+          <Link className={`navbar-brand ${styles.navbarBrand}`} to="/home">
             DH Odonto
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -65,24 +67,16 @@ const Navbar = () => {
                   logout
                 </button> : 
                 <Link className="nav-link" to="/login">Login</Link>}
-                {/* Se o usuário estiver logado, deverá aparecer um botão de logout
-                que vai apagar o token do localstorage.
-                Se o usuário estiver deslogado, um link fará um redirecionamento, com react-router,
-                ao formulário de login
-                O botão de logout deverá ser testado darkmode
-                se sim, btn-dark, se não, btn-light */}
+               
 
               </li>
               <li className={`nav-item`}>
-                {/* Ao ser clicado, esse botão mudará a aplicação para dark mode ou light mode.
-                 Lembre-se de usar um estado no contexto para fazer essa alteração.
-                 Na linha seguinte deverá ser feito um teste se a aplicação
-                 está em dark mode e deverá utilizar o icone ☀ ou 🌙 e btn-dark ou btn-light*/}
                 <button
-                  className={`btn btn-light${styles.btnStyle
+                  className={`${darkmode ? "btn-dark": "btn btn-light"} ${styles.btnStyle
                     }`}
+                  onClick={changeTheme}
                 >
-                  ☀ 🌙{" "}
+                  {darkmode ? "☀" :"🌙"}{" "}
                 </button>
               </li>
             </ul>

@@ -1,20 +1,19 @@
 
-import ScheduleFormModal from "../ScheduleForm/ScheduleFormModal";
+import ScheduleFormModal from "../ScheduleFormModal/ScheduleFormModal";
 import styles from "./DetailCard.module.css";
-
+import { useContext } from "react";
+import { ThemeContext } from "../../context/theme-context";
 
 const DetailCard = ({dentista}) => {
-
+  const {darkmode} = useContext(ThemeContext)
   return (
     //As instruções que estão com {''} precisam ser 
     //substituídas com as informações que vem da api
     <>
       <h1>Detail about Dentist {dentista?.nome} </h1>
       <section className="card col-sm-12 col-lg-6 container">
-        {/* //Na linha seguinte deverá ser feito um teste se a aplicação
-        // está em dark mode e deverá utilizar o css correto */}
         <div
-          className={`card-body row`}
+          className={`card-body row ${darkmode && styles.cardDark}`}
         >
           <div className="col-sm-12 col-lg-6">
             <img
@@ -38,7 +37,7 @@ const DetailCard = ({dentista}) => {
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                className={`btn btn-light ${styles.button
+                className={`btn ${darkmode ? "btn-dark":"btn-light"} ${styles.button
                   }`}
               >
                 Marcar consulta
