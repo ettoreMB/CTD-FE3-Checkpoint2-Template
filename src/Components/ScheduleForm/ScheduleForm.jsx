@@ -1,9 +1,10 @@
-import { useCallback,  useEffect, useState } from "react";
+import { useCallback,  useEffect, useState, useContext } from "react";
 import styles from "./ScheduleForm.module.css";
 import { api } from "../../lib/api";
-
+import { ThemeContext } from "../../context/theme-context";
 
 const ScheduleForm = () => {
+  const {darkmode} = useContext(ThemeContext)
   const [denstistas, setDentistas] = useState([])
   const [pacientes, setPacientes]= useState([])
   const [matriculaDentista, setMatriculaDentista] = useState('')
@@ -75,10 +76,7 @@ const ScheduleForm = () => {
 
   return (
     <>
-      <div
-        className={`text-center container}`
-        }
-      >
+      <div className={`text-center container`}>
         <form onSubmit={handleSubmit}>
           <div className={`row ${styles.rowSpacing}`}>
             <div className="col-sm-12 col-lg-6">
