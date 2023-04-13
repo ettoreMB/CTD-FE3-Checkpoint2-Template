@@ -1,7 +1,7 @@
 .DarkModal{
-  background-color: #313131;
+  background-color: #313131!important;
 }
 
 .closeButtonDark{
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1)!important;
 }

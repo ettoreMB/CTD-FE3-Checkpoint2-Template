@@ -47,9 +47,12 @@ const ScheduleForm = () => {
     loadPacientes()
     loadDentistas()
   }, []);
-  console.log(pacientes)
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
+    if(matriculaDentista === "" || matriculaPaciente === "" || horario === "") {
+      return alert('Todos os campos devem ser preenchidos')
+    }
     try {
       await api.post('/consulta',  {
         dentista: {
@@ -76,14 +79,14 @@ const ScheduleForm = () => {
 
   return (
     <>
-      <div className={`text-center container`}>
+      <div className={`text-center container ${darkmode && 'cardDark'}`}>
         <form onSubmit={handleSubmit}>
           <div className={`row ${styles.rowSpacing}`}>
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="dentist" className="form-label">
                 Dentista
               </label>
-              <select className="form-select" name="dentist" id="dentist" onChange={handleMatriculaDentista} value={matriculaDentista}>
+              <select className="form-select" name="dentist" id="dentist" onChange={handleMatriculaDentista} value={matriculaDentista} required>
               <option  value={''}>
                   Selecione
                 </option>
@@ -97,7 +100,7 @@ const ScheduleForm = () => {
               <label htmlFor="patient" className="form-label">
                 Paciente
               </label>
-              <select className="form-select" name="patient" id="patient" onChange={handleMatriculaPaciente} value={matriculaPaciente}>
+              <select className="form-select" name="patient" id="patient" onChange={handleMatriculaPaciente} value={matriculaPaciente} required>
                
                 <option key={'Matricula do paciente'} value={'Matricula do paciente'}>
                   Selecione
@@ -123,6 +126,7 @@ const ScheduleForm = () => {
                 type="datetime-local"
                 value={horario}
                 onChange={handleHorario}
+                required
               />
             </div>
           </div>
