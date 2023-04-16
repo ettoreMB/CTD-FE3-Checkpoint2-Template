@@ -5,11 +5,13 @@ import { AuthContext } from "../context/auth-context";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../Components/Spinner/Spinner";
 
+
 const Home = () => {
   const [dentistas, setDentistas] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(false)
   const context = useContext(AuthContext)
-  
+  const navigate = useNavigate()
   async function getData() {
     try {
       setIsLoading(true)
@@ -21,8 +23,8 @@ const Home = () => {
         }
       })
       setDentistas(data)
-    } catch {
-
+    } catch (error){
+      setError(true)
     } finally {
       setIsLoading(false)
     }
@@ -35,7 +37,13 @@ const Home = () => {
   return (
     <>
       <Spinner loading={isLoading} />
-      {!isLoading &&
+      {error && (
+        <>
+        <h1>Erro ao carreagar a pagina</h1>
+        <button className={`btn btn-light`}onClick={navigate(0)}>Recarregar pagina</button>
+      </>
+      )}
+      {(!isLoading && !error) &&
         (
           <>
             <h1>Home</h1>
