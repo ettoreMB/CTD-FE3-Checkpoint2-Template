@@ -9,8 +9,6 @@ function Layout({children}) {
   const {darkmode} = useContext(ThemeContext)
   return (
     <>
-    {/* //Na linha seguinte deverá ser feito um teste se a aplicação
-      // está em dark mode e deverá utilizar a classe dark ou light */}
     <div className={`app ${darkmode ? "dark":"light" }`}>
       <Navbar />
       <main>

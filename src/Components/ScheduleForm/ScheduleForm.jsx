@@ -42,11 +42,16 @@ const ScheduleForm = () => {
   function handleHorario(e) {
     setHorario(e.target.value)
   }
+
+  const promises = useCallback(()=> {
+    Promise.allSettled([
+      loadDentistas(), loadPacientes()
+    ]).then().catch((err) => {alert('Erro ao carregar apagina')})
+  }, [loadDentistas, loadPacientes])
  
   useEffect(() => {
-    loadPacientes()
-    loadDentistas()
-  }, []);
+    promises()
+  }, [promises]);
   
   const handleSubmit = async (event) => {
     event.preventDefault()

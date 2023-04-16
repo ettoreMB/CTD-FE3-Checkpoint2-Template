@@ -21,7 +21,7 @@ const Navbar = () => {
     if(!token) {
       navigate('/login')
     }
-  },[])
+  },[token])
   return (
     <header className="sticky-top">
    
